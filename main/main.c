@@ -3,16 +3,31 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
+#include "esp_system.h"
 #include "esp_log.h"
 #include "WS2812B.h"
 #include "UART.h"
 #include "RAK3172.h"
+
+#include "wifi.h"
+#include "mqtt_client.h"
+#include "mqtt_connection.h"
+
+#define EXAMPLE_ESP_WIFI_SSID   ""
+#define EXAMPLE_ESP_WIFI_PASS   ""
 
 static const char *TAG = "WATERTANK_RECEIVER";
 
 void app_main(void)
 {
     ESP_LOGI(TAG, "Initializing... \r\n");
+
+    // // Initialize Wifi
+    // wifi_connect(EXAMPLE_ESP_WIFI_SSID, EXAMPLE_ESP_WIFI_PASS);
+
+    // // Init MQTT client and Start
+    // mqtt_client_init();
+    // mqtt_client_start();
 
     init_led();
     init_uart();
@@ -25,4 +40,11 @@ void app_main(void)
     
     // Set RAK3172 as Receiver
     RAK3172_sendCommand("AT+PRECV=65534");
+
+    // float water_level = 123.0f;
+
+    // // Publish to MQTT
+    // char mqtt_data[20];
+    // snprintf(mqtt_data, sizeof(mqtt_data), "%.2f", water_level);
+    // mqtt_client_publish("/Estanques/Estanque_Principal/Nivel", mqtt_data, 0, 1, 1);
 }
